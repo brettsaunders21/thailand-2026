@@ -750,6 +750,17 @@ select.sel{border:1px solid var(--line);border-radius:12px;padding:8px 10px;back
 #t-prep:checked~main #prep{display:block;animation:fade .25s ease}#t-prep:checked~nav label[for=t-prep]{background:var(--teal);color:#fff}
 nav.tabs label{-webkit-tap-highlight-color:transparent;user-select:none}
 .nomap{padding:40px 20px;text-align:center;color:var(--muted)}
+
+.fpanel{padding:4px 14px;margin:0 0 16px}
+.frow{display:flex;align-items:center;gap:10px;padding:9px 0}.frow+.frow{border-top:1px solid var(--line)}
+.flabel{flex:0 0 52px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fscroll{flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:24px}
+.fscroll::-webkit-scrollbar{display:none}
+.fscroll .chip{flex:0 0 auto;white-space:nowrap;padding:7px 12px;display:inline-flex;align-items:center;gap:6px}
+.chip.on .dots i{background:rgba(255,255,255,.35)}.chip.on .dots i.f{background:var(--gold)}
+@media (min-width:900px){.fscroll{flex-wrap:wrap;-webkit-mask-image:none;mask-image:none;padding-right:0}}
+.frow{flex-direction:column;align-items:stretch;gap:7px;padding:10px 0}
+.flabel{flex:none}
 </style></head><body>
 <header class="hero">
 <svg class="karsts" viewBox="0 0 340 140" fill="#fff"><path d="M0 140 L20 60 Q30 30 45 55 L60 90 L80 20 Q92 0 104 25 L118 70 L132 50 Q140 40 150 60 L170 110 L190 40 Q200 15 214 40 L230 80 L250 30 Q262 10 276 35 L300 95 L320 70 L340 140Z"/></svg>
@@ -933,7 +944,7 @@ nav.tabs label{-webkit-tap-highlight-color:transparent;user-select:none}
 </section>
 <section class="view" id="explore">
   <div class="sec-h"><div><h2>Explore experiences</h2><p id="actCount">25 of 25 experiences</p></div></div>
-  <div class="filters" id="fBase"><button class="chip on" data-f="b" data-v="all">All bases</button><button class="chip " data-f="b" data-v="krabi">Krabi</button><button class="chip " data-f="b" data-v="khaolak">Khao Lak</button><button class="chip " data-f="b" data-v="phuket">Phuket</button></div><div class="filters" id="fVibe"><button class="chip on" data-f="v" data-v="all">Any vibe</button><button class="chip " data-f="v" data-v="adventure">Adventure</button><button class="chip " data-f="v" data-v="nature">Nature</button><button class="chip " data-f="v" data-v="relax">Relax</button><button class="chip " data-f="v" data-v="luxe">Luxe</button><button class="chip " data-f="v" data-v="culture">Culture</button><button class="chip " data-f="v" data-v="food">Food</button><button class="chip " data-f="v" data-v="walk">Walking</button><button class="chip on" data-f="e" data-v="all">Any effort</button><button class="chip " data-f="e" data-v="1">Easy</button><button class="chip " data-f="e" data-v="2">Moderate</button><button class="chip " data-f="e" data-v="3">Challenging</button></div>
+  <div class="fpanel card"><div class="frow"><span class="flabel">Where</span><div class="fscroll" id="fBase"><button class="chip on" data-f="b" data-v="all">All</button><button class="chip " data-f="b" data-v="krabi">Krabi</button><button class="chip " data-f="b" data-v="khaolak">Khao Lak</button><button class="chip " data-f="b" data-v="phuket">Phuket</button></div></div><div class="frow"><span class="flabel">Vibe</span><div class="fscroll" id="fVibe"><button class="chip on" data-f="v" data-v="all">Any</button><button class="chip " data-f="v" data-v="adventure">Adventure</button><button class="chip " data-f="v" data-v="nature">Nature</button><button class="chip " data-f="v" data-v="relax">Relax</button><button class="chip " data-f="v" data-v="luxe">Luxe</button><button class="chip " data-f="v" data-v="culture">Culture</button><button class="chip " data-f="v" data-v="food">Food</button><button class="chip " data-f="v" data-v="walk">Walking</button></div></div><div class="frow"><span class="flabel">Effort</span><div class="fscroll" id="fEffort"><button class="chip on" data-f="e" data-v="all">Any</button><button class="chip " data-f="e" data-v="1"><span class="dots" title="Effort 1/3"><i class="f"></i><i class=""></i><i class=""></i></span> Easy</button><button class="chip " data-f="e" data-v="2"><span class="dots" title="Effort 2/3"><i class="f"></i><i class="f"></i><i class=""></i></span> Moderate</button><button class="chip " data-f="e" data-v="3"><span class="dots" title="Effort 3/3"><i class="f"></i><i class="f"></i><i class="f"></i></span> Challenging</button></div></div></div>
   <div class="grid g2" id="actList"><div class="card act" data-id="railay">
     <div class="meta"><span class="pill krabi">Krabi</span> <span class="pill" style="background:transparent;border:1px solid var(--line);color:var(--muted)">Nature</span><span class="pill" style="background:transparent;border:1px solid var(--line);color:var(--muted)">Relax</span><span class="pill" style="background:transparent;border:1px solid var(--line);color:var(--muted)">Walking</span></div>
     <h3>Railay &amp; Phra Nang Cave Beach</h3>
@@ -1682,12 +1693,13 @@ function bindCards(root){
 let fBase="all",fVibe="all",fEffort="all";
 function explore(){
   const mk=(arr,cur,key)=>arr.map(([v,l])=>`<button class="chip ${cur===v?"on":""}" data-f="${key}" data-v="${v}">${l}</button>`).join("");
-  $("#fBase").innerHTML=mk([["all","All bases"],["krabi","Krabi"],["khaolak","Khao Lak"],["phuket","Phuket"]],fBase,"b");
-  $("#fVibe").innerHTML=mk([["all","Any vibe"],...Object.entries(VIBE)],fVibe,"v")+mk([["all","Any effort"],["1","Easy"],["2","Moderate"],["3","Challenging"]],fEffort,"e");
+  $("#fBase").innerHTML=mk([["all","All"],["krabi","Krabi"],["khaolak","Khao Lak"],["phuket","Phuket"]],fBase,"b");
+  $("#fVibe").innerHTML=mk([["all","Any"],...Object.entries(VIBE)],fVibe,"v");
+  $("#fEffort").innerHTML=mk([["all","Any"],["1",dots(1)+" Easy"],["2",dots(2)+" Moderate"],["3",dots(3)+" Challenging"]],fEffort,"e");
   $$("#explore .chip").forEach(c=>c.onclick=()=>{const k=c.dataset.f,v=c.dataset.v;if(k==="b")fBase=v;if(k==="v")fVibe=v;if(k==="e")fEffort=v;explore()});
   const list=ACTIVITIES.filter(a=>(fBase==="all"||a.base===fBase)&&(fVibe==="all"||a.vibes.includes(fVibe))&&(fEffort==="all"||a.effort==+fEffort));
   $("#actList").innerHTML=list.length?list.map(actCard).join(""):`<div class="card muted">Nothing matches those filters. Try widening them.</div>`;
-  $("#actCount").textContent=`${list.length} of ${ACTIVITIES.length} experiences`;
+  const filtered=fBase!=="all"||fVibe!=="all"||fEffort!=="all";$("#actCount").innerHTML=`${list.length} of ${ACTIVITIES.length} experiences${filtered?` · <button class="linkish" id="fReset">Clear filters</button>`:""}`;if(filtered)$("#fReset").onclick=()=>{fBase=fVibe=fEffort="all";explore()};
   bindCards($("#actList"));
 }
 
